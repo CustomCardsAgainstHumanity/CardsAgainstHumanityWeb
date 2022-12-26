@@ -1,0 +1,29 @@
+{
+  "name": "cardsagainsthumanityweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "devstart": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Razorr222/CardsAgainstHumanityWeb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Razorr222/CardsAgainstHumanityWeb/issues"
+  },
+  "homepage": "https://github.com/Razorr222/CardsAgainstHumanityWeb#readme",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
+  },
+  "devDependencies": {
+    "node": "^19.3.0",
+    "nodemon": "^2.0.20"
+  }
+}
