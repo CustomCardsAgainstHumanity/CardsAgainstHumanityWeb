@@ -1,1 +1,1 @@
-# CardsAgainstHumanityWeb
+# CardsAgainstHumanity

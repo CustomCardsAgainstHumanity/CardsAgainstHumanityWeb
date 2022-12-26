@@ -1,19 +1,29 @@
 {
-  "name": "cardsagaisnthumanity",
+  "name": "cardsagainsthumanityweb",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "devStart": "nodemon -e js,ejs,json,css"
+    "devstart": "nodemon app.js"
   },
-  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Razorr222/CardsAgainstHumanityWeb.git"
+  },
   "author": "",
   "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Razorr222/CardsAgainstHumanityWeb/issues"
+  },
+  "homepage": "https://github.com/Razorr222/CardsAgainstHumanityWeb#readme",
   "dependencies": {
-    "socket.io-client": "^4.5.4"
+    "dotenv": "^16.0.3",
+    "ejs": "^3.1.8",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3"
   },
   "devDependencies": {
+    "node": "^19.3.0",
     "nodemon": "^2.0.20"
   }
 }
