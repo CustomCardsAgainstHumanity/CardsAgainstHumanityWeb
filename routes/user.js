@@ -2,8 +2,12 @@ const express = require("express");
 const router = express.Router();
 
 router.get("/new/:username", (req, res) => {
-  res.send(`User Get user with username: ${req.params.username}`);
+  res.redirect("/game/");
 });
+
+router.get("/logout", (req, res) => {
+  
+})
 
 const users = []; // Users will be added to the database later down the line.
 router.param("username", (req, res, next, username) => {
