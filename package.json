@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devstart": "nodemon app.js -e ejs,js,css"
+    "devstart": "nodemon app.js -e ejs,js,css",
+    "lint:ejs": "ejslint views/gameSearch.ejs"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,8 @@
   },
   "homepage": "https://github.com/Razorr222/CardsAgainstHumanityWeb#readme",
   "dependencies": {
+    "axios": "^0.21.1",
+    "body-parser": "^1.20.1",
     "bootstrap": "^5.3.0-alpha1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.8",
@@ -25,6 +28,7 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "ejs-lint": "^2.0.0",
     "node": "^19.3.0",
     "nodemon": "^2.0.20"
   }
