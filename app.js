@@ -1,13 +1,12 @@
 const express = require("express");
 const session = require("express-session");
-const { v4: uuidv4 } = require('uuid');
 const app = express();
 require("dotenv").config();
 
 app.set("view engine", "ejs");
 app.use(
   session({
-    secret: uuidv4(),
+    secret: crypto.randomUUID(),
     resave: false,
     saveUninitialized: true,
   })
