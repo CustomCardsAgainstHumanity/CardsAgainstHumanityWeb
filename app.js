@@ -1,9 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser")
-const crypto = require("crypto")
 const session = require("express-session");
 const app = express();
-require("dotenv").config();
 
 app.set("view engine", "ejs");
 app.use(
