@@ -1,2 +1,76 @@
 <%-include('./header.ejs')%>
-<h1>gameSearch</h1>
+<link rel="stylesheet" href="/game.css" />
+<div class="row">
+    <script>
+        function JoinGame(playerName, gameUUID, type, locked = 'false') {
+            if (locked == 'true') {
+                //alert("Spit out the password.")
+                //Connect with server
+                //Verify Password
+                //If password successful, continue
+                //else cancel joining game
+            }
+            fetch(`/game/join${locked === 'true' ? "/locked" : ""}`, {
+                method: 'POST',
+                body: JSON.stringify({
+                    playerType: type,
+                    playerName: playerName,
+                    gameUUID: gameUUID
+                }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+        }
+    </script>
+  <%for (game of locals.gameArray) { %>
+    <div id="gamelist_lobby_<%=game.gameUUID%>" class="gamelist_lobby" tabindex="0">
+        <div class="gamelist_lobby_left">
+        <h3 style="color:black;">
+            <strong>
+                <span class="gamelist_lobby_host"><%-game.host%></span>'s Game 
+                (<span class="gamelist_lobby_player_count"><%-game.currentPlayers%></span>/<span class="gamelist_lobby_max_players"><%-game.maxPlayers%></span>,
+                <span class="gamelist_lobby_spectator_count"><%-game.currentSpectators%></span>/<span class="gamelist_lobby_max_spectators"><%-game.maxSpectators%></span>)
+            </strong>
+                <% if(game.progress == "Not Started"){ %>
+                    <span class="gamelist_lobby_status" style="font-size: 1em; color:red"><%-game.progress%></span>
+                <% } else { %>
+                    <span class="gamelist_lobby_status" style="font-size: 1em; color:limegreen"><%-game.progress%></span>
+                <% } %>
+        </h3>
+        <div>
+            <strong>Players:</strong>
+            <span class="gamelist_lobby_players"><%-game.players.length > 0 ? game.players.join(", ") : "None"%></span>
+        </div>
+        <div>
+            <strong>Spectators:</strong>
+            <span class="gamelist_lobby_spectators"><%-game.spectators.length > 0 ? game.spectators.join(", ") : "None"%></span>
+        </div>
+        <div>
+            <strong>Goal:</strong> <span class="gamelist_lobby_goal"><%-game.goal%></span>
+        </div>
+        <div>
+            <strong>Cards:</strong>
+            <span class="gamelist_lobby_cardset"><%-game.cardPacks.join(", ") %></span
+            >
+        </div>
+        <div class="hide">Game <span class="gamelist_lobby_id"><%-game.gameUUID%></span></div>
+        </div>
+        <div class="gamelist_lobby_right">
+            <% if(game.currentPlayers < game.maxPlayers && !game.password){ %>
+                <input type="button" onclick="JoinGame('<%=currentUser%>', '<%=game.gameUUID%>', 'player')" class="gamelist_lobby_join" value="Join" />
+            <% } else if (game.currentPlayers < game.maxPlayers && game.password){ %>  
+                <input type="button" onclick="JoinGame('<%=currentUser%>', '<%=game.gameUUID%>', 'player', '<%=game.password%>')" class="gamelist_lobby_join" value="Join (Locked)">
+            <% } else if (game.currentPlayers >= game.maxPlayers && !game.password){ %>  
+                <input type="button" class="gamelist_lobby_join" value="Join" disabled="disabled"/>
+            <% } else if (game.currentPlayers >= game.maxPlayers && game.password){ %>  
+                <input type="button" class="gamelist_lobby_join" value="Join (Locked)" disabled="disabled">
+            <% } if (game.currentSpectators < game.maxSpectators){ %>  
+                <input type="button" onclick="JoinGame('<%=currentUser%>', '<%=game.gameUUID%>', 'player')" class="gamelist_lobby_spectate" value="Spectate" />
+            <% } else if (game.currentSpectators >= game.maxSpectators){ %>  
+                <input type="button" class="gamelist_lobby_spectate" value="Spectate" disabled="disabled"/>
+            <% } %>
+        </div>
+    </div>
+  <% }%>
+</div>
