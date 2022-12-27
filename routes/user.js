@@ -18,12 +18,20 @@ router.get("/list", (req, res) => {
 router.param("username", (req, res, next, username) => {
   req.session.username = username;
   req.session.uuid = crypto.randomUUID();
-  const user = {
-    username: req.session.username,
-    uuid: req.session.uuid,
-  }
-  usersArray.push(user)
+  const socket = require('socket.io-client')('http://localhost:8080');
+
+  socket.on('connection', (socket) => {
+    const user = {
+      username: req.session.username,
+      uuid: req.session.uuid,
+      socketID: socket.id
+    }
+    usersArray.push(user)
+    socket.emit("loggedIn", req.session.username, req.session.uuid)
+    
+  })
   next();
+  
 });
 
 module.exports = router;
