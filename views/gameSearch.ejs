@@ -1,26 +1,44 @@
 <%-include('./header.ejs')%>
 <link rel="stylesheet" href="/game.css" />
+<script src="../socket.io/socket.io.js"></script>
 <div class="row">
     <script>
-        function JoinGame(playerName, gameUUID, type, locked = 'false') {
+        async function JoinGame(playerName, gameUUID, type, locked = 'false') {
+            console.log(1)
             if (locked == 'true') {
+                console.log(2)
+                const socket = io(window.location.origin)
+
+                socket.once('connect', async () => {
+                    let passwordInput = prompt("Enter the game's password.");
+                    if (passwordInput == null || passwordInput == "") return;
+                    socket.emit('checkPassword', gameUUID, passwordInput)
+                    await socket.once('passwordConfirmation', (success) => {
+                        if (!success) return alert("The password was incorrect!")
+                        sendPOSTgameJoin(playerName, gameUUID, type, locked)
+                    })
+                })
                 //alert("Spit out the password.")
                 //Connect with server
                 //Verify Password
                 //If password successful, continue
                 //else cancel joining game
+            } else {
+                sendPOSTgameJoin(playerName, gameUUID, type, locked)
             }
-            fetch(`/game/join${locked === 'true' ? "/locked" : ""}`, {
-                method: 'POST',
-                body: JSON.stringify({
-                    playerType: type,
-                    playerName: playerName,
-                    gameUUID: gameUUID
-                }),
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            });
+            function sendPOSTgameJoin(playerName, gameUUID, type, locked) {
+                fetch(`/game/join${locked === 'true' ? "/locked" : ""}`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        playerType: type,
+                        playerName: playerName,
+                        gameUUID: gameUUID
+                    }),
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+            }
         }
     </script>
   <%for (game of locals.gameArray) { %>
