@@ -21,6 +21,10 @@ h4 {
   margin: 0 0 0.25em;
 }
 
+div {
+  overflow-x: hidden;
+}
+
 error {
   color: red;
 }
@@ -69,13 +73,13 @@ error {
 }
 .gamelist_lobby {
   float: left;
-  width: 33.33%;
+  width: 33.2%;
   background: #fff;
   border-radius: 0.25em;
   height: 175px;
   float: left;
   border: 1px solid #ccc;
-  margin: left;
+  margin-left: 1px;
 }
 .gamelist_lobby_left {
   width: 77%;

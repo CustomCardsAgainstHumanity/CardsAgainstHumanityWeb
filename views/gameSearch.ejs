@@ -1,7 +1,14 @@
 <%-include('./header.ejs')%>
 <link rel="stylesheet" href="/game.css" />
-<div class="row" style="width:100%">
-    <script src="../game.js"></script>
+<div class="row" style="width:101.9%">
+<script src="../game.js"></script>
+<style>
+    *{
+        overflow-x: hidden;
+    }
+    
+</style>
+
   <%for (game of locals.gameArray) { %>
     <div id="gamelist_lobby_<%=game.gameUUID%>" class="gamelist_lobby" style="align-items: center;" tabindex="0">
         <div class="gamelist_lobby_left">
