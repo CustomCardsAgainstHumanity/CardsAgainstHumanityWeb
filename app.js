@@ -129,7 +129,7 @@ app.use("/", require("./routes/login"));
 app.use("/user", require("./routes/user"));
 app.use("/game", require("./routes/game"));
 
-let checkSessions = false;
+let checkSessions = true;
 function sessionChecker(req, res, next) {
   if (!checkSessions) return next()
   if (req.originalUrl.startsWith("/user/new/") || req.originalUrl == "/") return next();
