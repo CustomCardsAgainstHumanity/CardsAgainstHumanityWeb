@@ -38,9 +38,13 @@ router.get("/logout", (req, res) => {
   */
 });
 
-router.get("/list", (req, res) => {
-  res.status(200).send(userArray);
+router.get("/list", async (req, res) => {
+  socket.emit("getAllUsers");
+  await socket.on("retrieveAllUsers", (userArray) => {
+    res.status(200).send(userArray);
+  })
 });
+
 router.param("username", (req, res, next, username) => {
   req.session.username = username;
   req.session.uuid = crypto.randomUUID();

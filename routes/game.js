@@ -61,7 +61,6 @@ router.get("/refresh", async (req, res) => {
 });
 
 router.post("/join", (req, res) => {
-  console.log(req.body.playerName);
   console.log(
     `${req.body.playerName} wants to join a public game (${req.body.gameUUID}).`
   );
@@ -71,7 +70,6 @@ router.post("/join", (req, res) => {
 });
 
 router.post("/join/locked", (req, res) => {
-  console.log(req.body.playerName);
   console.log(
     `${req.body.playerName} wants to join a locked game (${req.body.gameUUID}).`
   );
