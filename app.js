@@ -8,7 +8,53 @@ const server = http.createServer(app);
 const { Server } = require("socket.io");
 const io = new Server(server);
 
-gameArray = [];
+gameArray = [
+  {
+    host: "asshole",
+    hostUUID: "assholeuuuid",
+    gameUUID: crypto.randomUUID(),
+    password: false,
+    currentPlayers: 0,
+    maxPlayers: 10,
+    currentSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    maxSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    progress: "Not Started", // Not Started, In Progress
+    players: [],
+    spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    goal: 10,
+    cardPacks: [],
+  },
+  {
+    host: "asshole",
+    hostUUID: "assholeuuuid",
+    gameUUID: crypto.randomUUID(),
+    password: false,
+    currentPlayers: 0,
+    maxPlayers: 10,
+    currentSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    maxSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    progress: "Not Started", // Not Started, In Progress
+    players: [],
+    spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    goal: 10,
+    cardPacks: [],
+  },
+  {
+    host: "asshole",
+    hostUUID: "assholeuuuid",
+    gameUUID: crypto.randomUUID(),
+    password: false,
+    currentPlayers: 0,
+    maxPlayers: 10,
+    currentSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    maxSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    progress: "Not Started", // Not Started, In Progress
+    players: [],
+    spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    goal: 10,
+    cardPacks: [],
+  },
+];
 userArray = [];
 
 var clients = {};
@@ -83,11 +129,11 @@ app.use("/", require("./routes/login"));
 app.use("/user", require("./routes/user"));
 app.use("/game", require("./routes/game"));
 
+let checkSessions = false;
 function sessionChecker(req, res, next) {
-  if (req.originalUrl.startsWith("/user/new/") || req.originalUrl == "/")
-    return next();
-  if (req.method != "POST" && !req.session.username /*|| !req.session.uuid*/)
-    return res.redirect("/");
+  if (!checkSessions) return next()
+  if (req.originalUrl.startsWith("/user/new/") || req.originalUrl == "/") return next();
+  if (req.method != "POST" && !req.session.username) return res.redirect("/");
   next();
   // We aren't checking for missing a uuid as it isn't implemented.
 }
