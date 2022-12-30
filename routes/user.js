@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require("node:crypto")
 
 const usersArray = []; // Users will be added to the database later down the line.
 
@@ -18,17 +19,15 @@ router.get("/list", (req, res) => {
 router.param("username", (req, res, next, username) => {
   req.session.username = username;
   req.session.uuid = crypto.randomUUID();
-  const socket = require('socket.io-client')('http://localhost:8080');
+  const socket = require('socket.io-client')("http://localhost:3000");
 
-  socket.on('connection', (socket) => {
+  socket.once('connection', (socket) => {
     const user = {
       username: req.session.username,
       uuid: req.session.uuid,
-      socketID: socket.id
     }
     usersArray.push(user)
     socket.emit("loggedIn", req.session.username, req.session.uuid)
-    
   })
   next();
   

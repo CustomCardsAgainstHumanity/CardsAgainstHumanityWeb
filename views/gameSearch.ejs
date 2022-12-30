@@ -1,22 +1,23 @@
 <%-include('./header.ejs')%>
 <script src="http://requirejs.org/docs/release/2.1.5/comments/require.js"></script>
 <link rel="stylesheet" href="/game.css" />
+<script src="../socket.io/socket.io.js"></script>
 <div class="row">
     <script>
-        const socket = require('socket.io-client')('http://localhost:8080');
         async function JoinGame(playerName, gameUUID, type, locked = 'false') {
+            console.log(1)
             if (locked == 'true') {
-                let passwordInput = prompt("Enter the game's password.");
-                if (passwordInput == null || passwordInput == "") return;
-                console.log(socket)
-                socket.once('connection', async (socket) => {
-                    console.log('Connected.')
+                console.log(2)
+                const socket = io(window.location.origin)
+
+                socket.once('connect', async () => {
+                    let passwordInput = prompt("Enter the game's password.");
+                    if (passwordInput == null || passwordInput == "") return;
                     socket.emit('checkPassword', gameUUID, passwordInput)
                     await socket.once('passwordConfirmation', (success) => {
-                        if (!success) return;
+                        if (!success) return alert("The password was incorrect!")
                         sendPOSTgameJoin(playerName, gameUUID, type, locked)
                     })
-                    
                 })
                 //alert("Spit out the password.")
                 //Connect with server

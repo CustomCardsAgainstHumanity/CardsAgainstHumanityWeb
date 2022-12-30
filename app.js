@@ -1,9 +1,12 @@
 const express = require("express");
 const bodyParser = require("body-parser")
 const session = require("express-session");
-const app = require('express')();
-const server = require('http').createServer(app);
-const io = require('socket.io')(server);
+const crypto = require("node:crypto");
+const app = express();
+const http = require('http');
+const server = http.createServer(app);
+const { Server } = require("socket.io");
+const io = new Server(server);
 
 io.on("connection", (socket) => {
   console.log(`Server has connnected to id: ${socket.id}`)
@@ -14,12 +17,7 @@ io.on("connection", (socket) => {
   socket.on("checkPassword", (gameUUID, userPasswordInput) => {
     console.log(`gameUUID: ${gameUUID}`)
     const gamePassword = "idfk"
-    console.log(userPasswordInput, gamePassword)
-    var success = false
-    if (userPasswordInput == gamePassword) {
-      success = true
-    }
-    socket.emit("passwordConfirmation", success)
+    socket.emit("passwordConfirmation", userPasswordInput == gamePassword)
   })
 
   socket.on("createNewGame", (options) => {});

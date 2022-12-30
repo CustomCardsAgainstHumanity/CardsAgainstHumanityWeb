@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require("node:crypto")
 
     // Retrive all games from the server
     // If the search is empty
@@ -81,6 +82,7 @@ gameArray = [
 ]
 
 router.get("/", (req, res) => {
+    delete require.cache[require.resolve('.././views/gameSearch.ejs')];
     res.render("gameSearch.ejs", { currentUser : req.session.username, gameArray: gameArray });
 });
 router.get("/list", (req, res) => {
@@ -88,10 +90,12 @@ router.get("/list", (req, res) => {
 });
 
 router.get("/create", (req, res) => {
+    delete require.cache[require.resolve('.././views/gameSearch.ejs')];
     res.render("gameSearch.ejs", { currentUser : req.session.username, gameArray: gameArray });
 });
   
 router.get("/refresh", (req, res) => {
+    delete require.cache[require.resolve('.././views/gameSearch.ejs')];
     res.render("gameSearch.ejs", { currentUser : req.session.username, gameArray: gameArray });
 });
 
