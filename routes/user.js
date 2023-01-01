@@ -15,20 +15,21 @@ router.get("/new/:username", (req, res) => {
       socketID: socket.id
     };
     socket.emit("getAllUsers");
-      await socket.on("retrieveAllUsers", (userArray) => {
-        let doesUserAlreadyExist =
-          userArray.filter(function (element) {
-            return element.username == req.session.username;
-          }).length > 0;
-        if (doesUserAlreadyExist) return res.redirect('/?error=invalid_nickname');
-        //socket.join(user.socketID).emit("loggedIn", user);
-        socket.emit("loggedIn", user);
-        res.redirect("/game/");
-      });
+    await socket.on("retrieveAllUsers", (userArray) => {
+      let doesUserAlreadyExist =
+        userArray.filter(function (element) {
+          return element.username == req.session.username;
+        }).length > 0;
+      if (doesUserAlreadyExist) return res.redirect('/?error=invalid_nickname');
+      //socket.join(user.socketID).emit("loggedIn", user);
+      socket.emit("loggedIn", user);
+      res.redirect("/game/");
+    });
   })
 });
 
 router.get("/logout", (req, res) => {
+  const socket = require("socket.io-client")("http://localhost:3000");
   /*
   req.session.destroy(() => {
     // disconnect all Socket.IO connections linked to this session ID
@@ -39,10 +40,12 @@ router.get("/logout", (req, res) => {
 });
 
 router.get("/list", async (req, res) => {
+  const socket = require("socket.io-client")("http://localhost:3000");
   socket.emit("getAllUsers");
   await socket.on("retrieveAllUsers", (userArray) => {
     res.status(200).send(userArray);
   })
+  socket.disconnect();
 });
 
 router.param("username", (req, res, next, username) => {
