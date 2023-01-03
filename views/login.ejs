@@ -1,22 +1,81 @@
-<div id="welcome">
-  <h1 tabindex="0">
-    Cards Against Humanity
-  </h1>
-  <h3>A replica of <a href="https://cardsagainsthumanity.com/">Cards Against Humanity</a>.</h3>
-    <div id="nickbox">
-    <label for="nickname">Nickname:</label>
-    <input type="text" id="nickname" value="" maxlength="30" role="textbox" aria-label="Enter your nickname."data-lpignore="true">
-    <input type="button" value="Set" onclick="location.href=`/user/new/${document.getElementById('nickname').value}`"/>
-    <script>
-      const params = new Proxy(new URLSearchParams(window.location.search), {
-        get: (searchParams, prop) => searchParams.get(prop),
-      });
-      var nickname_error = document.createElement('span')
-      nickname_error.innerText = params.error;
-      console.log(params.error)
-      nickname_error.classList.add('error');
-    </script>
-  </div>
-    This is a Cards Against Humanity clone, don't be an ass and copy it tho.
-  </p>
-</div>
+<!-- views/login.ejs -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Cards Against Humanity</title>
+    <link href='https://fonts.googleapis.com/css?family=Roboto' rel='stylesheet'>
+    <style>
+      body {
+        background-image: 
+          repeating-linear-gradient(135deg, #000 0%, #000 0%, #444 50%, #444 100%);
+        background-size: 50px 50px;
+        background-position: top left, top right, bottom left, bottom right;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        font-family: 'Roboto', sans-serif;
+        overflow: hidden;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        width: 500px;
+      }
+      label, input {
+        width: 300px;
+        margin: 10px 0;
+        font-size: 18px;
+      }
+      input[type="submit"] {
+        background-color: #1da1f2;
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      
+      input[type="submit"]:hover + input[type="submit"]:disabled {
+        background-color: #0c7cd5;
+      }
+      input[type="submit"]:disabled {
+        background-color: gray;
+        opacity: 45%;
+        cursor: not-allowed;
+      }
+      input[type="text"] {
+        border: 2px solid #1da1f2;
+        border-radius: 5px;
+        padding: 10px;
+        font-size: 18px;
+      }
+      h1 {
+        font-size: 32px;
+        margin: 20px 0;
+        text-align: center;
+      }
+      p {
+        color: red;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <form method="post" action="/login">
+      <h1>Cards Against Humanity</h1>
+      <label for="nickname">Nickname:</label>
+      <input type="text" name="nickname" oninput="document.getElementById('loginButton').disabled = this.value.trim() === ''" placeholder="JohnDoe" id="nickname" required>
+      <input type="submit" id="loginButton" value="Log In" disabled>
+      <p><%= locals.error %></p>
+    </form>
+  </body>
+</html>

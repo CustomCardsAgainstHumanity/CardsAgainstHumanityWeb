@@ -1,81 +1,90 @@
-const express = require("express");
+// routes/games.js
+const express = require('express');
 const router = express.Router();
-const crypto = require("node:crypto");
+const crypto = require('crypto');
+const tempGameArray = [{
+    host: "Khao",
+    hostUUID: "KhaoUUID",
+    gameUUID: crypto.randomUUID(),
+    password: false,
+    maxPlayers: 10,
+    maxSpectators: 10, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    progress: "Not Started", // Not Started, In Progress
+    players: [],
+    spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    goal: 10,
+    cardPacks: [],
+}, {
+    host: "Kyle",
+    hostUUID: "AssholeUUID",
+    gameUUID: crypto.randomUUID(),
+    password: true,
+    maxPlayers: 10,
+    maxSpectators: 10, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    progress: "Not Started", // Not Started, In Progress
+    players: ["Hero"],
+    spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
+    goal: 15,
+    cardPacks: [],
+}];
 
 router.get("/", (req, res) => {
-  delete require.cache[require.resolve(".././views/gameSearch.ejs")];
-  res.render("gameSearch.ejs", {
-    currentUser: req.session.username,
-    gameArray: gameArray,
-  });
-});
-router.get("/list", (req, res) => {
-  res.status(200).send(gameArray);
+    const error = req.query.error;
+    console.log(error)
+    const input = { gameArray: tempGameArray, currentUser: "Khao" };
+    if (error) input.error = error;
+    console.log(input)
+    res.render("gameMenu.ejs", input);
+})
+
+router.post("/join/:gameType", (req, res) => {
+
+})
+
+router.param("gameType", (req, res, next, gameType) => {
+    console.log(["spectate", "normal", "locked"].includes(gameType.toLowerCase()))
+    console.log(req.query)
+    if (!["spectata", "normal", "locked"].includes(gameType.toLowerCase())) {
+        res.redirect("http://localhost:3000/game?error=invaild_gametype");
+    }
 });
 
-router.get("/create", async (req, res) => {
-  const socket = require("socket.io-client")("http://localhost:3000");
-  socket.once("connect", async () => {
-    const options = {
-      host: req.session.username,
-      hostUUID: req.session.uuid,
-      gameUUID: crypto.randomUUID(),
-      password: false,
-      currentPlayers: 0,
-      maxPlayers: 10,
-      currentSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
-      maxSpectators: 0, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
-      progress: "Not Started", // Not Started, In Progress
-      players: [],
-      spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
-      goal: 10,
-      cardPacks: [],
-    };
-    socket.emit("createNewGame", options);
-  });
-  delete require.cache[require.resolve(".././views/gameSearch.ejs")];
-  socket.once("connect", async () => {
-    socket.emit("getAllGames")
-    await socket.on("retriveAllGames", (gameArray) => {
-      res.render("gameSearch.ejs", {
-        currentUser: req.session.username,
-        gameArray: gameArray,
-      });
-    })
-  })
-  // create game menu lol
-});
+// router.post('/new', async (req, res) => {
+//   // Get the current user
+//   const user = req.session.user;
+//   if (!user) {
+//     // If there is no logged in user, redirect to the login page
+//     res.redirect('/login');
+//     return;
+//   }
 
-router.get("/refresh", async (req, res) => {
-  delete require.cache[require.resolve(".././views/gameSearch.ejs")];
-  const socket = require("socket.io-client")("http://localhost:3000");
-  socket.once("connect", async () => {
-    socket.emit("getAllGames")
-    await socket.on("retriveAllGames", (gameArray) => {
-      res.render("gameSearch.ejs", {
-        currentUser: req.session.username,
-        gameArray: gameArray,
-      });
-    })
-  })
-});
+//   // Get the game properties from the request body
+//   const { maxPlayers, pointsGoal, maxSpectators, cardPacks } = req.body;
 
-router.post("/join", (req, res) => {
-  console.log(
-    `${req.body.playerName} wants to join a public game (${req.body.gameUUID}).`
-  );
-  res.send(
-    `${req.body.playerName} wants to join a public game (${req.body.gameUUID}).`
-  );
-});
+//   // Generate a unique game id
+//   let gameUUID;
+//   do {
+//     gameUUID = crypto.randomBytes(16).toString('hex');
+//   } while (await Game.exists({ gameUUID }));
 
-router.post("/join/locked", (req, res) => {
-  console.log(
-    `${req.body.playerName} wants to join a locked game (${req.body.gameUUID}).`
-  );
-  res.send(
-    `${req.body.playerName} wants to join a locked game (${req.body.gameUUID}).`
-  );
-});
+//   // Create a new game with the unique id and the specified properties
+//   const newGame = new Game({
+//     host: user._id,
+//     gameUUID,
+//     maxPlayers,
+//     pointsGoal,
+//     maxSpectators,
+//     players: [user._id],
+//     spectators: [],
+//     cardPacks
+//   });
+//   newGame.save((err) => {
+//     if (err) {
+//       res.sendStatus(500);
+//       return;
+//     }
+//     res.redirect(`/game/${gameId}`);
+//   });
+// });
 
 module.exports = router;
