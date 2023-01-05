@@ -1,4 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Rubik:wght@600&display=swap');
+* {
+    overflow-x: hidden;
+}
+
 #gamebody {
   overflow: hidden;
 }
@@ -113,8 +117,55 @@ error {
 }
 .gamelist_lobby_status {
   font-family: 'Rubik', sans-serif;
-  color: r
+  float: right;
+  font-size: 1em;
 }
 .hide {
   display: none;
+}
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 15% auto; /* 15% from the top and centered */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+  border-radius: 5px; /* Rounded corners */
+  font-family: Arial, sans-serif; /* Use a sans-serif font */
+  font-size: 16px; /* Use a larger font size */
+}
+
+.modal-content p {
+  color: #333; /* Use a darker color for the text */
+  font-weight: bold; /* Make the text bold */
+}
+
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  background-color: #fff; /* Use a white background */
+  border: 1px solid #888; /* Add a border */
+  border-radius: 50%; /* Make the button circular */
+  padding: 0 10px; /* Add some padding */
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer; /* Add a pointer cursor on hover */
+  background-color: #ddd; /* Use a lighter background color on hover */
 }
