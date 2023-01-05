@@ -1,4 +1,24 @@
 {
+<<<<<<< Updated upstream
+=======
+  "name": "cardsagainsthumanityweb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "devstart": "nodemon app.js -e ejs,js,css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Razorr222/CardsAgainstHumanityWeb.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Razorr222/CardsAgainstHumanityWeb/issues"
+  },
+  "homepage": "https://github.com/Razorr222/CardsAgainstHumanityWeb#readme",
+>>>>>>> Stashed changes
   "dependencies": {
     "body-parser": "^1.20.1",
     "bootstrap": "^5.3.0-alpha1",
