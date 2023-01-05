@@ -10,7 +10,7 @@ const tempGameArray = [{
     maxPlayers: 10,
     maxSpectators: 10, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
     progress: "Not Started", // Not Started, In Progress
-    players: [],
+    players: ["Khao"],
     spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
     goal: 10,
     cardPacks: [],
@@ -22,7 +22,7 @@ const tempGameArray = [{
     maxPlayers: 10,
     maxSpectators: 10, // SPECTATORS WILL NOT BE ADDED TILL LATER ON
     progress: "Not Started", // Not Started, In Progress
-    players: ["Hero"],
+    players: ["Kyle", "Hero"],
     spectators: [], // SPECTATORS WILL NOT BE ADDED TILL LATER ON
     goal: 15,
     cardPacks: [],
@@ -44,7 +44,7 @@ router.post("/join/:gameType", (req, res) => {
 router.param("gameType", (req, res, next, gameType) => {
     console.log(["spectate", "normal", "locked"].includes(gameType.toLowerCase()))
     console.log(req.query)
-    if (!["spectata", "normal", "locked"].includes(gameType.toLowerCase())) {
+    if (!["spectate", "normal", "locked"].includes(gameType.toLowerCase())) {
         res.redirect("http://localhost:3000/game?error=invaild_gametype");
     }
 });
