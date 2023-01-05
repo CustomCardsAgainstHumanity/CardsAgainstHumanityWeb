@@ -1,28 +1,33 @@
 <%-include('./header.ejs')%>
-<link rel="stylesheet" href="/game.css" />
+<link rel="stylesheet" href="/public/game.css" />
+<div id="error-modal" class="modal">
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <p>An error occurred:</p>
+        <p id="error-message"></p>
+    </div>
+</div>
+<script src="/public/game.js"></script>
+<script src="/public/errorCodes.js"></script>
+<script>
+    console.log(errorCodes)
+</script>
+<% if (locals.error) { %>
+<script>
+    handleError('<%= locals.error %>');
+</script>
+<% } %>
 <div class="row" style="width:101.9%">
-<script src="../game.js"></script>
-<style>
-    *{
-        overflow-x: hidden;
-    }
-    
-</style>
-
-  <%for (game of locals.gameArray) { %>
+  <%for (game of gameArray) { %>
     <div id="gamelist_lobby_<%=game.gameUUID%>" class="gamelist_lobby" style="align-items: center;" tabindex="0">
         <div class="gamelist_lobby_left">
         <h3 style="color:black;">
             <strong>
                 <span class="gamelist_lobby_host"><%-game.host%></span>'s Game 
-                (<span class="gamelist_lobby_player_count"><%-game.currentPlayers%></span>/<span class="gamelist_lobby_max_players"><%-game.maxPlayers%></span>,
-                <span class="gamelist_lobby_spectator_count"><%-game.currentSpectators%></span>/<span class="gamelist_lobby_max_spectators"><%-game.maxSpectators%></span>)
+                (<span class="gamelist_lobby_player_count"><%-game.players.length%></span>/<span class="gamelist_lobby_max_players"><%-game.maxPlayers%></span>,
+                <span class="gamelist_lobby_spectator_count"><%-game.spectators.length%></span>/<span class="gamelist_lobby_max_spectators"><%-game.maxSpectators%></span>)
             </strong>
-                <% if(game.progress == "Not Started"){ %>
-                    <span class="gamelist_lobby_status" style="font-size: 1em; color:red"><%-game.progress%></span>
-                <% } else { %>
-                    <span class="gamelist_lobby_status" style="font-size: 1em; color:limegreen"><%-game.progress%></span>
-                <% } %>
+            <span class="gamelist_lobby_status" <%= game.progress === "Not Started" ? 'style=color:red' : 'style=color:green' %> ><%-game.progress%></span>
         </h3>
         <div>
             <strong>Players:</strong>
@@ -43,7 +48,15 @@
         <div class="hide">Game <span class="gamelist_lobby_id"><%-game.gameUUID%></span></div>
         </div>
         <div class="gamelist_lobby_right">
-            <% if(game.currentPlayers < game.maxPlayers && !game.password){ %>
+            <form action="/game/join/<%= game.password ? 'locked' : 'normal'; %>?gameUUID=<%= game.gameUUID %>" method="post">
+                <input type="submit" class="gamelist_lobby_join"  value="<%= game.password ? 'Join (Locked)' : 'Join' %>"  <%= game.players.length >= game.maxPlayers ? "disabled" : "" %>/>
+            </form>
+            <form action="/game/join/spectate?gameUUID=<%= game.gameUUID %>" method="post">
+                <input type="submit" class="gamelist_lobby_spectate"  value="Spectate"  <%= game.spectators.length >= game.maxSpectators || game.password ? "disabled" : "" %>/>
+            </form>
+
+
+            <!-- <% if(game.currentPlayers < game.maxPlayers && !game.password){ %>
                 <input type="button" onclick="JoinGame('<%=currentUser%>', '<%=game.gameUUID%>', 'player')" class="gamelist_lobby_join" value="Join" />
             <% } else if (game.currentPlayers < game.maxPlayers && game.password){ %>  
                 <input type="button" onclick="JoinGame('<%=currentUser%>', '<%=game.gameUUID%>', 'player', '<%=game.password%>')" class="gamelist_lobby_join" value="Join (Locked)">
@@ -52,10 +65,10 @@
             <% } else if (game.currentPlayers >= game.maxPlayers && game.password){ %>  
                 <input type="button" class="gamelist_lobby_join" value="Join (Locked)" disabled="disabled">
             <% } if (game.currentSpectators < game.maxSpectators){ %>  
-                <input type="button" onclick="JoinGame('<%=currentUser%>', '<%=game.gameUUID%>', 'player')" class="gamelist_lobby_spectate" value="Spectate" />
+                <input type="button" class="gamelist_lobby_spectate" value="Spectate" />
             <% } else if (game.currentSpectators >= game.maxSpectators){ %>  
                 <input type="button" class="gamelist_lobby_spectate" value="Spectate" disabled="disabled"/>
-            <% } %>
+            <% } %> -->
         </div>
     </div>
   <% }%>

@@ -1,12 +1,20 @@
 const express = require("express");
 const router = express.Router();
+const crypto = require("crypto");
+const makeSocket = require("socket.io-client");
 
 router.get("/", (req, res) => {
-  delete require.cache[require.resolve('.././views/login.ejs')];
-  res.render("login.ejs");
+    res.render("login.ejs", { });
 });
-router.get("/login", (req, res) => {
-  res.redirect("/");
+
+router.post("/", (req, res) => {
+    req.session.loggedIn = true;
+    req.session.user = {
+        username: req.body.nickname,
+        uuid: crypto.randomUUID(),
+    }
+    res.locals.user = req.session.user;
+    res.redirect("/game");
 });
 
 module.exports = router;

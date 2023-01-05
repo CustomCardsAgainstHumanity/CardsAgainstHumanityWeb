@@ -1,54 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
+<head>
     <title>Cards Against Humanity</title>
-    <link rel="stylesheet" href="/game.css" />
-    <script src="../socket.io/socket.io.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
-  </head>
-  <body data-bs-theme="dark">
-    <nav class="navbar navbar-expand bg-body-tertiary bg-dark">
-      <div class="container-fluid" style="height:25px; overflow-y: hidden;">
-        <ul class="navbar-nav nav-pills me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link menubar menubar_left" href="/game/create">Create Game</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link menubar menubar_left" href="/game/refresh">Refresh Games</a>
-          </li>
-
-          <div>
-            <script>
-              function onInputHandler(e) {
-                const socket = io();
-                socket.once("connect", async () => {
-                  socket.emit("getAllGames")
-                  await socket.on("retriveAllGames", (gameArray) => {
-                    const filteredItems = gameArray.filter(item => `${item.players.join(", ")} ${item.progress} ${item.cardPacks.join(", ")}`.toLowerCase().includes(e.value.toLowerCase()));
-                    let gameUUIDsToRemove = [];
-                    for (gameListID of document.getElementsByClassName("gamelist_lobby_id")) {
-                      delete filteredItems[filteredItems.indexOf(gameListID.innerHTML)];
-                      gameUUIDsToRemove = filteredItems.map(a => `gamelist_lobby_${a.gameUUID}`);
-                    }                
-                    for (item of gameUUIDsToRemove) {
-                      var element = document.getElementById(item);
-                      element.remove()
-                    }
-                    socket.disconnect();
-                  })
-                })
-              }
-            </script>
-            <input type="text" class="form-control bg-dark" id="searchInput" oninput="onInputHandler(this)" placeholder="Filter games by keyword">
-          </div>
-        </ul>
-        <div class="nav-item">
-          <a class="nav-link menubar menubar_right" style="color:#f44444;" href="/user/logout">Logout</a>
-        </div>
-      </div>
-    </nav>
-  </body>
-</html>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+</head>
